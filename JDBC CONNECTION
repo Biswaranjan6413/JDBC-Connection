@@ -1,0 +1,48 @@
+First create a java project name is jdbc connection.
+Then go to the any brower , and download jdbc jar file , postgres jar file link  :- jdbc postgresql jar(jar 42.7.4) , then download the which version support the jar file in  your java application .
+Create a class name jdbc,
+Then write the code jdbc code to connected in postsql to java 
+
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class ConnectJDBC3 {
+    public static void main(String[] args) {
+        // Correct JDBC URL for PostgreSQL
+        String databaseURL = "jdbc:postgresql://localhost:5432/Fruit"; // Replace with your actual database name
+        String user = "postgres";  // Replace with your PostgreSQL username
+        String password = "root"; // Replace with your PostgreSQL password
+
+        // SQL insert statement with placeholders
+        String sql = "INSERT INTO Product(product, name, price) VALUES (?, ?, ?)";
+         
+        // Try-with-resources to auto-close resources
+        try (Connection conn = DriverManager.getConnection(databaseURL, user, password);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+              
+            // Load the PostgreSQL driver
+            Class.forName("org.postgresql.Driver");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+            // Set values for the placeholders
+            pstmt.setInt(1, 1); // Assuming personID is an integer
+            pstmt.setString(2, "mo"); // firstName
+            pstmt.setInt(3, 12); // producttName
+          
+
+            // Execute the insert statement
+            int rowsInserted = pstmt.executeUpdate();
+            if (rowsInserted > 0) {
+                System.out.println("A new row was inserted successfully!");
+            }
+        } catch (ClassNotFoundException ex) {
+            System.out.println("Could not find database driv class");
+            ex.printStackTrace();
+        } catch (SQLException ex) {
+            System.out.println("An error occurred. Please check the SQL statement or database configuration.");
+            ex.printStackTrace();
+        }
+    }
+}
